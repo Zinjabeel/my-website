@@ -1,0 +1,202 @@
+@import "tailwindcss";
+
+/* ───────────────────────────── Launchly design tokens ─────────────────────────────
+   Paper / Ink editorial base, Night surfaces for immersive frames,
+   one Signal colour (ignition orange) used sparingly for intent and status. */
+
+@theme {
+  --color-paper: #e9e9e6;
+  --color-paper-2: #f3f3f1;
+  --color-paper-3: #dcdcd8;
+  --color-ink: #141414;
+  --color-ink-2: #2e2e2c;
+  --color-muted: #5f5f5b;
+  --color-line: rgb(20 20 20 / 0.14);
+  --color-night: #0c0c0d;
+  --color-night-2: #161618;
+  --color-night-3: #232326;
+  --color-fog: #a3a3a8;
+  --color-signal: #ff5b1f;
+  --color-signal-ink: #1a0a03;
+  --color-success: #1f7a4d;
+  --color-danger: #b42318;
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+
+  --breakpoint-xs: 26rem;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --gutter: clamp(1rem, 3.2vw, 2.75rem);
+    --dock-h: 4.75rem;
+  }
+
+  html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.55;
+    min-height: 100dvh;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-signal);
+    color: var(--color-signal-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img {
+    user-select: none;
+  }
+
+  /* Lenis */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+}
+
+@layer components {
+  .gutter {
+    padding-inline: var(--gutter);
+  }
+
+  /* Display type — tight, heavy, editorial */
+  .display {
+    font-weight: 720;
+    letter-spacing: -0.055em;
+    line-height: 0.84;
+    font-stretch: 100%;
+  }
+  .headline {
+    font-weight: 650;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+
+  /* Monospace labels: "(01) Services", timecodes, meta */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .hairline {
+    border-color: var(--color-line);
+  }
+
+  /* VHS screen treatment for immersive frames */
+  .crt::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 3px),
+      radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.55) 100%);
+    mix-blend-mode: normal;
+    z-index: 2;
+  }
+
+  /* Page transition: an ink panel lifts off upward, content settles in. */
+  .page-wipe {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: var(--color-night);
+    pointer-events: none;
+    display: grid;
+    place-items: center;
+    transform: translateY(0);
+    animation: wipe-lift 0.9s var(--ease-in-out-quint) 0.05s forwards;
+  }
+  .page-wipe__label {
+    color: var(--color-fog);
+    animation: wipe-label 0.5s ease forwards;
+  }
+  .page-enter {
+    animation: page-enter 1s var(--ease-out-expo) 0.35s both;
+  }
+  @keyframes wipe-lift {
+    to {
+      transform: translateY(-101%);
+    }
+  }
+  @keyframes wipe-label {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes page-enter {
+    from {
+      transform: translateY(32px);
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.5s var(--ease-out-expo);
+  }
+  .link-underline:hover {
+    background-size: 0% 1px;
+    background-position: 100% 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

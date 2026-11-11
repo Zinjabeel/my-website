@@ -1,0 +1,48 @@
+[
+  {
+    "slug": "astro-example",
+    "name": "Astro",
+    "url": "https://astro.build",
+    "placeholder": true,
+    "year": "2026",
+    "sector": "Tech",
+    "summary": "Example entry used to test the portfolio system. Replace it with a real Launchly project.",
+    "about": "Astro is a public open-source web framework website. It is shown here only as a stand-in so the portfolio, previews and case-study layout can be tested end-to-end. It is not a Launchly project.",
+    "built": [
+      "Placeholder — list what Launchly designed and built for the client.",
+      "Placeholder — e.g. new information architecture and page templates.",
+      "Placeholder — e.g. CMS setup and content migration."
+    ],
+    "stack": [
+      "Placeholder",
+      "Next.js",
+      "Headless CMS"
+    ],
+    "features": [
+      {
+        "title": "Placeholder feature",
+        "body": "Describe an important design or development feature of the real project here."
+      },
+      {
+        "title": "Placeholder feature",
+        "body": "For example: a conversion-focused enquiry flow, a custom CMS model or a performance win."
+      }
+    ],
+    "services": [
+      "Design",
+      "Development",
+      "SEO"
+    ],
+    "embeddable": true,
+    "accent": "#7c3aed",
+    "media": {
+      "desktop": "/projects/astro-example/desktop.jpg",
+      "full": "/projects/astro-example/full.jpg",
+      "mobile": "/projects/astro-example/mobile.jpg",
+      "width": 1440,
+      "height": 900,
+      "fullHeight": 5400
+    },
+    "addedAt": "2026-11-11"
+  }
+]
