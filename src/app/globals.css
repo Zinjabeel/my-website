@@ -158,6 +158,28 @@
   .page-enter {
     animation: page-enter 1s var(--ease-out-expo) 0.35s both;
   }
+  /* Arriving from the holo viewer: the case "became" the page, so no wipe — the page resolves from a zoom. */
+  .page-wipe.is-skipped {
+    visibility: hidden;
+    animation: none;
+    transform: translateY(-101%);
+  }
+  .page-enter.is-zoom {
+    animation: page-zoom 0.9s var(--ease-out-expo) both;
+  }
+  @keyframes page-zoom {
+    from {
+      opacity: 0;
+      transform: scale(1.06);
+      filter: blur(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+  }
+
   @keyframes wipe-lift {
     to {
       transform: translateY(-101%);
@@ -175,6 +197,44 @@
     to {
       transform: none;
     }
+  }
+
+  .marquee-track {
+    animation: marquee 38s linear infinite;
+    will-change: transform;
+  }
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Film grain over the paper — gives flat colour a printed, tactile feel. */
+  .grain {
+    position: fixed;
+    inset: -50%;
+    z-index: 85;
+    pointer-events: none;
+    opacity: 0.055;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    animation: grain 1.2s steps(6) infinite;
+  }
+  @keyframes grain {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-3%, 2%); }
+    40% { transform: translate(2%, -4%); }
+    60% { transform: translate(-4%, -2%); }
+    80% { transform: translate(3%, 3%); }
+    100% { transform: translate(0, 0); }
+  }
+
+  /* Project cards: the full page scrolls inside the frame on hover. */
+  .scroll-shot {
+    transition: transform 0.9s var(--ease-out-expo);
+  }
+  .group:hover .scroll-shot {
+    transform: translateY(calc(-100% + 100cqh));
+    transition: transform var(--scroll-dur, 6s) cubic-bezier(0.45, 0, 0.55, 1);
   }
 
   .link-underline {

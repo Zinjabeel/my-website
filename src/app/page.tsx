@@ -5,7 +5,8 @@ import { HeroShelf } from "@/components/shelf/HeroShelf";
 import { ServicesList } from "@/components/home/ServicesList";
 import { ProjectCard, ReservedCard } from "@/components/work/ProjectCard";
 import { ButtonLink, SectionLabel } from "@/components/ui/primitives";
-import { Reveal, ScrollWords, SplitWords } from "@/components/ui/motion";
+import { CountUp, Reveal, ScrollGrow, ScrollWords, SplitWords } from "@/components/ui/motion";
+import { Marquee } from "@/components/ui/Marquee";
 import { projects } from "@/content/projects";
 import { principles, stages } from "@/content/offer";
 import { site } from "@/content/site";
@@ -17,27 +18,33 @@ export default function HomePage() {
       <TopBar />
 
       {/* ── Hero ── */}
-      <section aria-labelledby="hero-title" className="gutter pt-[4vh]">
-        <h1 id="hero-title" className="display text-[clamp(3.4rem,11.6vw,13rem)]">
-          <SplitWords text="Websites that" immediate delay={0.45} className="block" />
-          <SplitWords text="keep working." immediate delay={0.6} className="block text-ink/35" />
-        </h1>
-        <div className="mt-8 grid gap-6 md:mt-12 md:grid-cols-12 md:items-end">
-          <p className="label text-muted md:col-span-3">(01) Launchly — est. {site.yearsBuilding} years of launches</p>
-          <p className="max-w-xl text-[clamp(1.1rem,1.5vw,1.35rem)] leading-snug md:col-span-6">
-            We design and build websites for established companies — engineered to generate leads, rank in search and
-            stay easy to run long after launch.
-          </p>
-          <div className="md:col-span-3 md:justify-self-end">
-            <ButtonLink href="/contact" variant="ink">
-              Start a project
-            </ButtonLink>
+      <section aria-labelledby="hero-title" className="gutter pt-[3vh]">
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <h1 id="hero-title" className="display text-[clamp(3.4rem,10.2vw,12rem)] lg:col-span-9">
+            <SplitWords text="Websites that" immediate delay={0.45} className="block" />
+            <SplitWords text="keep working." immediate delay={0.6} className="block text-ink/30" />
+          </h1>
+          <div className="lg:col-span-3 lg:pb-[0.6vw]">
+            <p className="label text-muted">(01) Launchly — {site.yearsBuilding} years of launches</p>
+            <p className="mt-4 max-w-md text-[clamp(1.05rem,1.25vw,1.2rem)] leading-snug">
+              We design and build websites for established companies — engineered to generate leads, rank in search and stay
+              easy to run long after launch.
+            </p>
+            <div className="mt-6">
+              <ButtonLink href="/contact" variant="ink">
+                Start a project
+              </ButtonLink>
+            </div>
           </div>
         </div>
-        <div className="mt-10 md:mt-14">
+        <ScrollGrow className="mt-10 origin-top md:mt-12">
           <HeroShelf />
-        </div>
+        </ScrollGrow>
       </section>
+
+      <div className="mt-24 md:mt-32">
+        <Marquee items={["Websites that convert", "Built to rank", "Easy to market", "12 months of care"]} />
+      </div>
 
       {/* ── Intro ── */}
       <section aria-label="Introduction" className="gutter py-28 md:py-44">
@@ -58,7 +65,7 @@ export default function HomePage() {
           <div>
             <SectionLabel index="03">Services</SectionLabel>
             <h2 id="services-title" className="display mt-5 text-[clamp(2.8rem,7.5vw,7.5rem)]">
-              What we launch
+              <SplitWords text="What we launch" />
             </h2>
           </div>
           <p className="max-w-sm text-muted">
@@ -74,7 +81,7 @@ export default function HomePage() {
           <div>
             <SectionLabel index="04">Selected work</SectionLabel>
             <h2 id="work-title" className="display mt-5 text-[clamp(2.8rem,7.5vw,7.5rem)]">
-              Recent launches
+              <SplitWords text="Recent launches" />
             </h2>
           </div>
           <ButtonLink href="/work" variant="ghost">
@@ -102,7 +109,8 @@ export default function HomePage() {
           </p>
           <div className="mt-8 grid gap-10 md:grid-cols-12 md:items-end">
             <h2 id="why-title" className="display text-[clamp(7rem,26vw,24rem)] leading-[0.75] text-signal md:col-span-7">
-              12<span className="text-paper">mo</span>
+              <CountUp to={12} />
+              <span className="text-paper">mo</span>
             </h2>
             <p className="headline text-[clamp(1.6rem,3vw,2.75rem)] md:col-span-5">
               Touch-ups, changes and updates are included for the first 12 months. No extra charge.
@@ -126,7 +134,7 @@ export default function HomePage() {
           <div>
             <SectionLabel index="06">Process</SectionLabel>
             <h2 id="process-title" className="display mt-5 text-[clamp(2.8rem,7.5vw,7.5rem)]">
-              Seven steps to lift-off
+              <SplitWords text="Seven steps to lift-off" />
             </h2>
           </div>
           <ButtonLink href="/process" variant="ghost">

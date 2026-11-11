@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { site } from "@/content/site";
+import { legalDocs } from "@/content/legal";
 import { LogoMark } from "./Logo";
 
 export function Footer() {
@@ -63,7 +64,19 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-20 flex flex-col gap-3 text-muted sm:flex-row sm:items-end sm:justify-between">
+        <nav aria-label="Legal" className="mt-20">
+          <ul className="flex flex-wrap gap-x-6 gap-y-2">
+            {legalDocs.map((d) => (
+              <li key={d.slug}>
+                <Link href={`/legal/${d.slug}`} className="label text-ink-2 transition-colors hover:text-ink">
+                  {d.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="mt-6 flex flex-col gap-3 text-muted sm:flex-row sm:items-end sm:justify-between">
           <p className="label">© {year} {site.legalName}. All rights reserved.</p>
           <p className="label">
             A small team, est. {year - site.yearsBuilding} — founded by {site.founder}

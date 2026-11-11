@@ -18,8 +18,18 @@ export function ProjectCard({ project, priority = false, index }: { project: Pro
             className="absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
             style={{ background: "radial-gradient(70% 60% at 50% 100%, color-mix(in srgb, var(--accent) 45%, transparent), transparent)" }}
           />
-          <div className="relative aspect-[16/10] overflow-hidden rounded-[6px] bg-night-2 shadow-[0_30px_60px_-20px_rgb(0_0_0/0.6)] transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.025]">
-            {project.media ? (
+          <div className="relative aspect-[16/10] overflow-hidden rounded-[6px] bg-night-2 shadow-[0_30px_60px_-20px_rgb(0_0_0/0.6)] transition-transform duration-700 ease-[var(--ease-out-expo)] [container-type:size] group-hover:scale-[1.025]">
+            {project.media?.full && project.media.fullHeight ? (
+              <Image
+                src={project.media.full}
+                alt={`Screenshot of the ${project.name} website`}
+                width={1440}
+                height={project.media.fullHeight}
+                priority={priority}
+                sizes="(max-width: 768px) 92vw, 50vw"
+                className="scroll-shot absolute left-0 top-0 h-auto w-full"
+              />
+            ) : project.media ? (
               <Image
                 src={project.media.desktop}
                 alt={`Screenshot of the ${project.name} website`}

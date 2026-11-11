@@ -68,6 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SmoothScroll />
         <Dock />
         <Cursor />
+        <div aria-hidden className="grain" />
         <JsonLd data={organizationJsonLd()} />
       </body>
     </html>

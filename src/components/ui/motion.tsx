@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
-import { useRef } from "react";
+import { animate, motion, useInView, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { useEffect, useRef } from "react";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -77,6 +77,41 @@ export function SplitWords({
         ))}
       </span>
     </span>
+  );
+}
+
+/** Counts up to `to` when scrolled into view. The final number is server-rendered for no-JS and SEO. */
+export function CountUp({ to, duration = 1.6, className }: { to: number; duration?: number; className?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const reduce = useReducedMotion();
+  const inView = useInView(ref, { once: true, margin: "0px 0px -20% 0px" });
+  useEffect(() => {
+    if (!inView || reduce || !ref.current) return;
+    const el = ref.current;
+    const controls = animate(0, to, {
+      duration,
+      ease: [0.16, 1, 0.3, 1],
+      onUpdate: (v) => (el.textContent = String(Math.round(v))),
+    });
+    return () => controls.stop();
+  }, [inView, reduce, to, duration]);
+  return (
+    <span ref={ref} className={`tabular-nums ${className ?? ""}`}>
+      {to}
+    </span>
+  );
+}
+
+/** Scales a block up from slightly inset as it scrolls into place. */
+export function ScrollGrow({ children, className }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "start 0.25"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [0.92, 1]);
+  return (
+    <motion.div ref={ref} style={reduce ? undefined : { scale }} className={className}>
+      {children}
+    </motion.div>
   );
 }
 

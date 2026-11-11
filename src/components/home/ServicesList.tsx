@@ -1,7 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { Plus } from "lucide-react";
+import { ArrowUpRight, Plus } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { services } from "@/content/offer";
 
@@ -49,7 +50,15 @@ export function ServicesList() {
                 >
                   <div className="grid gap-4 pb-8 md:grid-cols-[5rem_1fr_1fr_auto] md:gap-4">
                     <span className="hidden md:block" />
-                    <p className="max-w-xl text-[1.05rem] text-ink-2">{s.detail}</p>
+                    <div>
+                      <p className="max-w-xl text-[1.05rem] text-ink-2">{s.detail}</p>
+                      <Link
+                        href={`/services/${s.id}`}
+                        className="label mt-5 inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-paper transition-colors hover:bg-signal hover:text-signal-ink"
+                      >
+                        Explore this service <ArrowUpRight className="size-3.5" aria-hidden />
+                      </Link>
+                    </div>
                     <ul className="flex flex-wrap content-start gap-2">
                       {s.tags.map((t) => (
                         <li key={t} className="label rounded-full border hairline px-3 py-1.5 text-ink-2">

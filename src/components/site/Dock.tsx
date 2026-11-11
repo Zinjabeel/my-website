@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion, useScroll } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
 import { LogoMark } from "./Logo";
@@ -18,6 +18,7 @@ function isActive(pathname: string, href: string) {
 export function Dock() {
   const pathname = usePathname();
   const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll();
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
@@ -96,7 +97,12 @@ export function Dock() {
         aria-label="Primary"
         className="pointer-events-none fixed inset-x-0 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-[70] flex justify-center px-3"
       >
-        <div className="pointer-events-auto flex items-center gap-1 rounded-[12px] border border-night-3 bg-night p-1.5 text-paper shadow-[0_18px_50px_-12px_rgb(0_0_0/0.45)]">
+        <div className="pointer-events-auto relative flex items-center gap-1 rounded-[12px] border border-night-3 bg-night p-1.5 text-paper shadow-[0_18px_50px_-12px_rgb(0_0_0/0.45)]">
+          <motion.span
+            aria-hidden
+            style={{ scaleX: scrollYProgress }}
+            className="absolute inset-x-3 -top-px h-[2px] origin-left rounded-full bg-signal"
+          />
           <Link
             href="/"
             aria-label="Launchly — home"

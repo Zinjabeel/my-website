@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { projects } from "@/content/projects";
 import { absoluteUrl } from "@/lib/seo";
+import { legalDocs } from "@/content/legal";
+import { services } from "@/content/offer";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -13,5 +15,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const work = projects
     .filter((p) => !p.placeholder)
     .map((p) => ({ url: absoluteUrl(`/work/${p.slug}`), lastModified: new Date(p.addedAt), changeFrequency: "yearly" as const, priority: 0.7 }));
-  return [...pages, ...work];
+  const legal = ["/legal", ...legalDocs.map((d) => `/legal/${d.slug}`)].map((p) => ({
+    url: absoluteUrl(p),
+    lastModified: now,
+    changeFrequency: "yearly" as const,
+    priority: 0.3,
+  }));
+  const svc = services.map((s) => ({
+    url: absoluteUrl(`/services/${s.id}`),
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+  return [...pages, ...svc, ...work, ...legal];
 }

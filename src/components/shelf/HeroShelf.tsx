@@ -9,6 +9,7 @@ import { buildShelfItems, type ShelfItem } from "./items";
 import { projects } from "@/content/projects";
 
 const ShelfScene = dynamic(() => import("./ShelfScene"), { ssr: false });
+const HoloViewer = dynamic(() => import("@/components/holo/HoloViewer").then((m) => m.HoloViewer), { ssr: false });
 
 function supportsWebGL() {
   try {
@@ -60,14 +61,24 @@ export function HeroShelf() {
   }, []);
 
   useEffect(() => {
-    if (frame.current) frame.current.dataset.cursor = current ? `Open — ${current.title}` : "";
+    if (frame.current) frame.current.dataset.cursor = current ? `Pull out — ${current.title}` : "";
     document.body.style.cursor = current ? "pointer" : "";
     return () => {
       document.body.style.cursor = "";
     };
   }, [current]);
 
-  const onSelect = useCallback((item: ShelfItem) => router.push(item.href), [router]);
+  const [viewing, setViewing] = useState<ShelfItem | null>(null);
+  const onSelect = useCallback(
+    (item: ShelfItem) => {
+      // 3D path opens the holographic viewer; anything else goes straight to the page.
+      if (mode === "3d") {
+        setHovered(null);
+        setViewing(item);
+      } else router.push(item.href);
+    },
+    [mode, router],
+  );
   const onReady = useCallback(() => setReady(true), []);
 
   return (
@@ -103,7 +114,7 @@ export function HeroShelf() {
               onHover={setHovered}
               onSelect={onSelect}
               onReady={onReady}
-              active={inView && playing}
+              active={inView && playing && !viewing}
             />
           </div>
         )}
@@ -130,7 +141,7 @@ export function HeroShelf() {
                   <span className="block text-paper">{current.title}</span>
                 </>
               ) : (
-                <span className="text-fog">{mode === "3d" ? "Move to look around · click a case" : "Pick a case below"}</span>
+                <span className="text-fog">{mode === "3d" ? "Move to look around · click a case to pull it out" : "Pick a case below"}</span>
               )}
             </p>
             <span className="hidden text-fog sm:block">Ch. 01</span>
@@ -160,6 +171,7 @@ export function HeroShelf() {
           ))}
         </ul>
       </nav>
+      {viewing && <HoloViewer item={viewing} onClose={() => setViewing(null)} />}
     </div>
   );
 }

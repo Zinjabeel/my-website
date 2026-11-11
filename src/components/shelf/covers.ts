@@ -45,12 +45,13 @@ function loadImage(src: string) {
 
 export const COVER = { w: 512, h: 736 };
 
-export async function drawCover(item: ShelfItem) {
+export async function drawCover(item: ShelfItem, scale = 1) {
   const { sans, mono } = fonts();
   const cv = document.createElement("canvas");
-  cv.width = COVER.w;
-  cv.height = COVER.h;
+  cv.width = COVER.w * scale;
+  cv.height = COVER.h * scale;
   const ctx = cv.getContext("2d")!;
+  ctx.scale(scale, scale);
   const pad = 32;
   const bg = { screen: C.night, ink: C.ink, paper: C.paper, signal: C.signal }[item.tone];
   const fg = { screen: C.paper, ink: C.paper, paper: C.ink, signal: C.signalInk }[item.tone];
@@ -144,6 +145,59 @@ export async function drawCover(item: ShelfItem) {
     ctx.font = `700 18px ${mono}`;
     ctx.textBaseline = "middle";
     ctx.fillText("EXAMPLE ENTRY", COVER.w - 196, 94);
+  }
+  return cv;
+}
+
+/** Back of the case, seen when the viewer flips it over. */
+export function drawBack(item: ShelfItem, scale = 2) {
+  const { sans, mono } = fonts();
+  const cv = document.createElement("canvas");
+  cv.width = COVER.w * scale;
+  cv.height = COVER.h * scale;
+  const ctx = cv.getContext("2d")!;
+  ctx.scale(scale, scale);
+  const pad = 32;
+  ctx.fillStyle = C.ink;
+  ctx.fillRect(0, 0, COVER.w, COVER.h);
+  ctx.fillStyle = C.signal;
+  ctx.fillRect(0, COVER.h - 56, COVER.w, 56);
+  ctx.fillStyle = C.signalInk;
+  ctx.font = `600 20px ${mono}`;
+  ctx.textBaseline = "middle";
+  ctx.fillText("LAUNCHLY ARCHIVE", pad, COVER.h - 28);
+  ctx.textAlign = "right";
+  ctx.fillText(item.code, COVER.w - pad, COVER.h - 28);
+  ctx.textAlign = "left";
+
+  ctx.textBaseline = "top";
+  ctx.fillStyle = C.fog;
+  ctx.font = `500 18px ${mono}`;
+  ctx.fillText(item.kicker.toUpperCase().slice(0, 36), pad, pad + 4);
+  ctx.fillStyle = C.paper;
+  ctx.font = `700 40px ${sans}`;
+  wrap(ctx, item.title.toUpperCase(), COVER.w - pad * 2)
+    .slice(0, 3)
+    .forEach((l, i) => ctx.fillText(l, pad, pad + 40 + i * 40));
+
+  ctx.font = `400 21px ${sans}`;
+  ctx.fillStyle = "#cfcfcb";
+  wrap(ctx, item.body, COVER.w - pad * 2)
+    .slice(0, 9)
+    .forEach((l, i) => ctx.fillText(l, pad, 230 + i * 30));
+
+  ctx.font = `500 16px ${mono}`;
+  let y = COVER.h - 210;
+  for (const n of item.notes.slice(0, 4)) {
+    ctx.fillStyle = "rgba(255,255,255,.14)";
+    ctx.fillRect(pad, y - 10, COVER.w - pad * 2, 1);
+    ctx.fillStyle = C.fog;
+    ctx.fillText(n.label.toUpperCase(), pad, y);
+    ctx.fillStyle = C.paper;
+    ctx.textAlign = "right";
+    ctx.fillText(n.value.toUpperCase().slice(0, 28), COVER.w - pad, y);
+    ctx.textAlign = "left";
+    y += 34;
   }
   return cv;
 }
