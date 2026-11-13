@@ -54,7 +54,9 @@ Read briefs and messages in Supabase → Table Editor. Change a brief's `status`
 
 Until the two env values are set, the login dialog says accounts aren't switched on, and the contact form saves to `./.submissions/` in development.
 
-**Before going public:** Supabase's built-in email sender is for testing (a few emails an hour). Add your own SMTP (for example Resend) under Authentication → Emails.
+**Before going public — email:** Supabase's built-in email sender is for testing only. It sends a few emails an hour and **only to addresses that belong to your Supabase organisation**, so strangers can't complete sign-up until you add your own SMTP (for example Resend) under Authentication → Emails. Also set the Site URL and redirect URLs to your real domain there.
+
+**Tests and the database:** `npm test` submits the contact form for real, so each run adds "Playwright Test" rows to `contact_messages`. Delete them afterwards, or point `.env.local` at a separate test project.
 
 ## Adding a portfolio project
 

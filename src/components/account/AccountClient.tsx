@@ -22,7 +22,10 @@ export function AccountClient() {
   const [deleteError, setDeleteError] = useState("");
 
   useEffect(() => {
-    if (!ready || user || prompted.current) return;
+    if (!ready) return;
+    // Only prompt when someone ARRIVES signed out — never right after they log out or delete their account.
+    if (user) prompted.current = true;
+    if (prompted.current) return;
     prompted.current = true;
     openAuth("login");
   }, [ready, user, openAuth]);

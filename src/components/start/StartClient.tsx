@@ -52,7 +52,10 @@ export function StartClient() {
 
   // Arriving signed-out opens the account dialog once.
   useEffect(() => {
-    if (!ready || user || prompted.current) return;
+    if (!ready) return;
+    // Only prompt when someone ARRIVES signed out — never right after they log out or delete their account.
+    if (user) prompted.current = true;
+    if (prompted.current) return;
     prompted.current = true;
     openAuth("signup");
   }, [ready, user, openAuth]);

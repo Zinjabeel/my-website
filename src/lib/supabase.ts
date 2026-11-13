@@ -35,6 +35,9 @@ export function authMessage(error: { message?: string; code?: string; status?: n
   if (code === "weak_password" || msg.includes("password should")) return "That password is too weak. Use at least 12 characters with letters and numbers.";
   if (code === "same_password") return "Choose a password you haven't used here before.";
   if (code === "user_already_exists" || msg.includes("already registered")) return "This email already has an account. Log in instead.";
+  if (code === "email_address_invalid") return "That email address doesn't look right. Check it and try again.";
+  if (code === "email_address_not_authorized") return "We can't send a confirmation email to that address yet. Please use the contact form and we'll set you up.";
+  if (code === "signup_disabled") return "New accounts are paused at the moment. Please use the contact form instead.";
   if (code === "captcha_failed") return "The security check didn't pass. Please try again.";
   if (msg.includes("failed to fetch") || msg.includes("network")) return "We couldn't reach the server. Check your connection and try again.";
   return "Something went wrong. Please try again.";
