@@ -61,7 +61,6 @@ export function HeroShelf() {
   }, []);
 
   useEffect(() => {
-    if (frame.current) frame.current.dataset.cursor = current ? `Pull out — ${current.title}` : "";
     document.body.style.cursor = current ? "pointer" : "";
     return () => {
       document.body.style.cursor = "";
@@ -85,7 +84,7 @@ export function HeroShelf() {
     <div>
       <div
         ref={frame}
-        className="crt relative aspect-[4/5] w-full overflow-hidden rounded-[10px] bg-night text-paper sm:aspect-[16/10] lg:aspect-[16/8.2]"
+        className="crt relative aspect-[4/5] w-full overflow-hidden rounded-[8px] border-[1.5px] border-night-3 bg-night text-paper sm:aspect-[16/10] lg:aspect-[16/7.6]"
       >
         {/* Still frame: shown while loading, or as the fallback */}
         <div
@@ -119,6 +118,8 @@ export function HeroShelf() {
           </div>
         )}
 
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-2/5 bg-gradient-to-t from-night via-night/70 to-transparent" />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-[3] h-24 bg-gradient-to-b from-night/80 to-transparent" />
         {/* VHS HUD */}
         <div className="pointer-events-none absolute inset-0 z-[3] p-4 font-mono text-[0.8rem] uppercase tracking-wide sm:p-6 sm:text-[0.95rem]">
           <div className="flex items-start justify-between [text-shadow:1px_0_rgb(255_0_60/0.55),-1px_0_rgb(0_200_255/0.55)]">
@@ -160,11 +161,11 @@ export function HeroShelf() {
                 onPointerLeave={() => setHovered(null)}
                 onFocus={() => setHovered(it.id)}
                 onBlur={() => setHovered(null)}
-                className={`label inline-flex h-9 items-center gap-2 whitespace-nowrap rounded-full border px-3 transition-colors ${
-                  hovered === it.id ? "border-ink bg-ink text-paper" : "border-line text-ink-2 hover:border-ink"
+                className={`label inline-flex h-9 items-center gap-2 whitespace-nowrap rounded-[4px] border px-3 transition-colors ${
+                  hovered === it.id ? "border-signal bg-signal text-signal-ink" : "border-night-3 text-paper hover:border-paper"
                 }`}
               >
-                <span className="text-muted">{it.code}</span>
+                <span className={hovered === it.id ? "text-signal-ink/70" : "text-fog"}>{it.code}</span>
                 {it.title}
               </Link>
             </li>

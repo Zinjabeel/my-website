@@ -22,39 +22,77 @@ function sameOrigin(req: NextRequest) {
   }
 }
 
-async function deliver(data: ContactInput): Promise<"sent" | "saved" | "unconfigured"> {
+/** Stores the message in Supabase (table contact_messages). Insert-only by row-level security. */
+async function store(data: ContactInput): Promise<boolean> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) return false;
+  const res = await fetch(`${url}/rest/v1/contact_messages`, {
+    method: "POST",
+    headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json", Prefer: "return=minimal" },
+    body: JSON.stringify({
+      name: data.name,
+      email: data.email,
+      company: data.company || null,
+      project_type: data.projectType,
+      budget: data.budget || null,
+      message: data.message,
+    }),
+    signal: AbortSignal.timeout(10000),
+  });
+  if (!res.ok) throw new Error(`Supabase responded ${res.status}`);
+  return true;
+}
+
+/** Emails the message through Resend, when configured. */
+async function email(data: ContactInput): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO_EMAIL;
   const from = process.env.CONTACT_FROM_EMAIL;
+  if (!key || !to || !from) return false;
+  const rows = [
+    ["Name", data.name],
+    ["Email", data.email],
+    ["Company", data.company || "—"],
+    ["Project type", data.projectType],
+    ["Budget", data.budget || "—"],
+  ]
+    .map(([k, v]) => `<tr><td style="padding:4px 12px 4px 0;color:#666">${k}</td><td>${escapeHtml(v)}</td></tr>`)
+    .join("");
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from,
+      to: [to],
+      reply_to: data.email,
+      subject: `New message — ${data.name}${data.company ? ` (${data.company})` : ""}`,
+      html: `<h2>New message from the website</h2><table>${rows}</table><p style="white-space:pre-wrap">${escapeHtml(data.message)}</p>`,
+      text: `${data.name} <${data.email}>
+Company: ${data.company || "—"}
+Type: ${data.projectType}
+Budget: ${data.budget || "—"}
 
-  if (key && to && from) {
-    const rows = [
-      ["Name", data.name],
-      ["Email", data.email],
-      ["Company", data.company || "—"],
-      ["Project type", data.projectType],
-      ["Budget", data.budget || "—"],
-    ]
-      .map(([k, v]) => `<tr><td style="padding:4px 12px 4px 0;color:#666">${k}</td><td>${escapeHtml(v)}</td></tr>`)
-      .join("");
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from,
-        to: [to],
-        reply_to: data.email,
-        subject: `New enquiry — ${data.name}${data.company ? ` (${data.company})` : ""}`,
-        html: `<h2>New project enquiry</h2><table>${rows}</table><p style="white-space:pre-wrap">${escapeHtml(data.message)}</p>`,
-        text: `${data.name} <${data.email}>\nCompany: ${data.company || "—"}\nType: ${data.projectType}\nBudget: ${data.budget || "—"}\n\n${data.message}`,
-      }),
-      signal: AbortSignal.timeout(10000),
-    });
-    if (!res.ok) throw new Error(`Resend responded ${res.status}`);
-    return "sent";
-  }
+${data.message}`,
+    }),
+    signal: AbortSignal.timeout(10000),
+  });
+  if (!res.ok) throw new Error(`Resend responded ${res.status}`);
+  return true;
+}
 
-  // No email provider configured: keep enquiries locally during development.
+/**
+ * A message counts as delivered once it is stored OR emailed. Both run when both are configured;
+ * if one fails the other still carries the message.
+ */
+async function deliver(data: ContactInput): Promise<"delivered" | "saved" | "unconfigured"> {
+  const results = await Promise.allSettled([store(data), email(data)]);
+  const failures = results.filter((r) => r.status === "rejected") as PromiseRejectedResult[];
+  failures.forEach((f) => console.error("[contact]", f.reason));
+  if (results.some((r) => r.status === "fulfilled" && r.value)) return "delivered";
+  if (failures.length) throw failures[0].reason;
+
+  // Nothing configured: keep messages locally during development.
   if (process.env.NODE_ENV !== "production") {
     const dir = path.join(process.cwd(), ".submissions");
     await mkdir(dir, { recursive: true });
@@ -103,7 +141,7 @@ export async function POST(req: NextRequest) {
   try {
     const result = await deliver(parsed.data);
     if (result === "unconfigured") {
-      console.error("[contact] RESEND_API_KEY / CONTACT_TO_EMAIL / CONTACT_FROM_EMAIL are not set.");
+      console.error("[contact] Neither Supabase nor Resend is configured — see .env.example.");
       return NextResponse.json(
         { ok: false, error: "Our contact form is temporarily unavailable. Please email us directly." },
         { status: 503 },

@@ -204,3 +204,33 @@ export const stages: Stage[] = [
     deliverables: ["Launch & monitoring", "Team handover", "12 months of care"],
   },
 ];
+
+export type Faq = { q: string; a: string };
+
+/** Answers are limited to what Launchly has actually committed to. */
+export const faqs: Faq[] = [
+  {
+    q: "What kind of companies do you work with?",
+    a: "Mostly established companies in tech, news and media, construction and retail — businesses that already have customers and need a website that works as hard as they do.",
+  },
+  {
+    q: "What's included in a Launchly website?",
+    a: "Design and development, pages built to generate enquiries, a CMS so your team can edit content, technical SEO foundations, a marketing-ready setup, and 12 months of touch-ups, changes and updates.",
+  },
+  {
+    q: "What happens after launch?",
+    a: "We stay on. For the first 12 months, touch-ups, changes and updates are included at no extra charge, so the website keeps improving while you learn what your visitors need.",
+  },
+  {
+    q: "Can we update the website ourselves?",
+    a: "Yes. Every website comes with a content system shaped around how your team publishes, plus a walkthrough — day-to-day changes don't need a developer.",
+  },
+  {
+    q: "How much does a website cost?",
+    a: "It depends on the size and what the site needs to do. Send us a short brief and we'll reply with a clear proposal and estimate before any work starts.",
+  },
+  {
+    q: "How do we get started?",
+    a: "Create a free account and send a project brief — it takes a few minutes. We read every brief personally and reply with questions, first thoughts and next steps.",
+  },
+];

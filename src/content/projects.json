@@ -1,48 +1,66 @@
 [
   {
-    "slug": "astro-example",
-    "name": "Astro",
-    "url": "https://astro.build",
-    "placeholder": true,
+    "slug": "ogcw",
+    "name": "One Great Culture World",
+    "url": "https://ogcw-muse.vercel.app",
+    "placeholder": false,
     "year": "2026",
-    "sector": "Tech",
-    "summary": "Example entry used to test the portfolio system. Replace it with a real Launchly project.",
-    "about": "Astro is a public open-source web framework website. It is shown here only as a stand-in so the portfolio, previews and case-study layout can be tested end-to-end. It is not a Launchly project.",
+    "sector": "News & media",
+    "summary": "A culture news platform covering music, gaming, sports and entertainment — with reader accounts, a community forum, a shop and an editor the newsroom runs itself.",
+    "about": "OGCW (One Great Culture World) is an online culture publication. It reports on music, gaming, sports, entertainment and politics, links its sources on every story, and gives readers an account to save stories, vote and join the forum.",
     "built": [
-      "Placeholder — list what Launchly designed and built for the client.",
-      "Placeholder — e.g. new information architecture and page templates.",
-      "Placeholder — e.g. CMS setup and content migration."
+      "A front page and section fronts designed like a magazine, with rotating lead stories and a consistent story-card system.",
+      "A headless CMS where editors write, place and publish stories themselves — including choosing where each story appears on the front page.",
+      "Reader accounts with email and social login, password rules and protected sign-up.",
+      "A community forum with rooms, voting, bookmarks and notifications.",
+      "A shop section that curates brands and drops and sends readers on to the retailers.",
+      "Cookie preferences, legal pages, security headers and rate limiting on every sensitive action.",
+      "Search-ready foundations: canonical URLs, link previews, RSS, robots rules and structured story pages."
     ],
     "stack": [
-      "Placeholder",
-      "Next.js",
-      "Headless CMS"
+      "TanStack Start",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Sanity CMS",
+      "Supabase",
+      "Vercel",
+      "Bunny CDN"
     ],
     "features": [
       {
-        "title": "Placeholder feature",
-        "body": "Describe an important design or development feature of the real project here."
+        "title": "An editor the newsroom runs",
+        "body": "Stories are written in a page-style editor laid out like the real article, and placed on the front page without touching code."
       },
       {
-        "title": "Placeholder feature",
-        "body": "For example: a conversion-focused enquiry flow, a custom CMS model or a performance win."
+        "title": "Accounts and community",
+        "body": "One login for saving stories, rating, voting and posting in the forum — with sign-up protected against abuse."
+      },
+      {
+        "title": "Built to stay online",
+        "body": "Stories are served through a cache and media through a CDN, with videos loading only when they are near the screen."
+      },
+      {
+        "title": "Privacy done properly",
+        "body": "Optional cookies start switched off, with clear accept, reject and customise choices and plain-language policies."
       }
     ],
     "services": [
       "Design",
       "Development",
+      "CMS",
       "SEO"
     ],
-    "embeddable": true,
-    "accent": "#7c3aed",
+    "embeddable": false,
+    "accent": "#86600e",
     "media": {
-      "desktop": "/projects/astro-example/desktop.jpg",
-      "full": "/projects/astro-example/full.jpg",
-      "mobile": "/projects/astro-example/mobile.jpg",
+      "desktop": "/projects/ogcw/desktop.jpg",
+      "full": "/projects/ogcw/full.jpg",
+      "mobile": "/projects/ogcw/mobile.jpg",
       "width": 1440,
       "height": 900,
       "fullHeight": 5400
     },
-    "addedAt": "2026-11-11"
+    "addedAt": "2026-11-13"
   }
 ]

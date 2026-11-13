@@ -203,7 +203,7 @@ export function HoloViewer({ item, onClose }: { item: ShelfItem; onClose: () => 
                 <p key="k" className="label text-signal">
                   {item.code} — {item.kicker}
                 </p>,
-                <h2 key="t" id="holo-title" className="headline mt-4 text-[clamp(2rem,3vw,3rem)]">
+                <h2 key="t" id="holo-title" className="display mt-4 text-[clamp(1.9rem,2.8vw,2.75rem)]">
                   {item.title}
                 </h2>,
                 <p key="b" className="mt-5 text-[1rem] leading-relaxed text-fog">
@@ -244,7 +244,7 @@ export function HoloViewer({ item, onClose }: { item: ShelfItem; onClose: () => 
                 <p className="label text-signal">
                   {item.code} — {item.kicker}
                 </p>
-                <p className="headline mt-2 text-[1.9rem]">{item.title}</p>
+                <p className="display mt-2 text-[1.8rem]">{item.title}</p>
               </motion.div>
               <motion.dl
                 className="hidden border-t border-paper/15 md:block"

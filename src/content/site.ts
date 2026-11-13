@@ -22,8 +22,9 @@ export const site = {
   sectors: ["Tech", "News & media", "Construction", "Retail"],
   nav: [
     { href: "/work", label: "Work" },
-    { href: "/about", label: "About" },
+    { href: "/services", label: "Services" },
     { href: "/process", label: "Process" },
+    { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
   ],
 } as const;

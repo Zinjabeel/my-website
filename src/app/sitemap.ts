@@ -6,7 +6,7 @@ import { services } from "@/content/offer";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  const pages = ["/", "/work", "/about", "/process", "/contact"].map((p) => ({
+  const pages = ["/", "/work", "/services", "/process", "/about", "/contact", "/start"].map((p) => ({
     url: absoluteUrl(p),
     lastModified: now,
     changeFrequency: "monthly" as const,

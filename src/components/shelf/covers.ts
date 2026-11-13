@@ -245,7 +245,7 @@ export function drawPegboard() {
 
 /** Orange header band with the archive title. */
 export function drawBand() {
-  const { sans, mono } = fonts();
+  const { sans } = fonts();
   const cv = document.createElement("canvas");
   cv.width = 2048;
   cv.height = 160;
@@ -257,10 +257,5 @@ export function drawBand() {
   ctx.textBaseline = "middle";
   ctx.textAlign = "center";
   ctx.fillText("THE LAUNCH ARCHIVE", 1024, 86);
-  ctx.font = `600 30px ${mono}`;
-  ctx.textAlign = "left";
-  ctx.fillText("WORK · SERVICES", 40, 86);
-  ctx.textAlign = "right";
-  ctx.fillText("OPEN 24H", 2008, 86);
   return cv;
 }

@@ -1,73 +1,63 @@
 import type { Metadata } from "next";
-import { TopBar } from "@/components/site/TopBar";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { ContactForm } from "@/components/contact/ContactForm";
-import { SectionLabel } from "@/components/ui/primitives";
-import { SplitWords } from "@/components/ui/motion";
+import { Eyebrow, PageHead } from "@/components/ui/primitives";
 import { site } from "@/content/site";
 import { breadcrumbJsonLd, JsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Start a project with Launchly. Tell us about your company and what your new website needs to achieve.",
+  description: "Ask Launchly a question about your website, our services or how we work.",
   alternates: { canonical: "/contact" },
   openGraph: { url: "/contact", title: "Contact — Launchly" },
 };
 
-const steps = [
-  { n: "01", t: "You send the brief", b: "A few lines about your company and goals is enough to start." },
-  { n: "02", t: "We reply personally", b: "With questions, first thoughts and how we'd approach it." },
-  { n: "03", t: "Discovery call", b: "We go deeper, then send a clear proposal and estimate." },
-];
-
 export default function ContactPage() {
   return (
     <>
-      <TopBar section="Contact" />
-      <section className="gutter pb-28 pt-[6vh]">
-        <SectionLabel index="08">Start a project</SectionLabel>
-        <h1 className="display mt-6 text-[clamp(3.4rem,11vw,11.5rem)]">
-          <SplitWords text="Let's talk." immediate delay={0.4} />
-        </h1>
+      <PageHead
+        eyebrow="Contact"
+        title="Ask us anything."
+        intro="A question about your website, our services or how we work? Send a message — no account needed, and a person replies."
+      />
 
-        <div className="mt-14 grid gap-16 md:mt-20 lg:grid-cols-12">
+      <section className="wrap section">
+        <div className="grid gap-14 lg:grid-cols-12">
           <aside className="lg:col-span-4">
-            <p className="max-w-sm text-[1.15rem] leading-snug">
-              Tell us about your company and what the website needs to do. No obligation — just a conversation.
-            </p>
+            <Link href="/start" className="card card-hard card-link group block p-6">
+              <span className="tag">Ready to begin?</span>
+              <p className="h-card mt-5">Start a project</p>
+              <p className="mt-2 text-[0.95rem] text-ink-2">
+                Send a proper brief and track it from your account. It&apos;s the fastest way to a proposal and estimate.
+              </p>
+              <span className="eyebrow mt-6 inline-flex items-center gap-2">
+                Send a brief <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" aria-hidden />
+              </span>
+            </Link>
 
-            <ol className="mt-10 border-t hairline">
-              {steps.map((s) => (
-                <li key={s.n} className="grid grid-cols-[2.5rem_1fr] border-b hairline py-5">
-                  <span className="label pt-1 text-muted">{s.n}</span>
-                  <div>
-                    <p className="font-semibold tracking-[-0.02em]">{s.t}</p>
-                    <p className="mt-1 text-[0.95rem] text-muted">{s.b}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-
-            <div className="mt-10 space-y-6">
+            <div className="mt-10 space-y-7">
               <div>
-                <p className="label text-muted">Email</p>
+                <Eyebrow dot={false}>Email</Eyebrow>
                 {site.emailIsPlaceholder ? (
-                  <p className="mt-2 text-[0.95rem] text-muted">
-                    <span className="label rounded bg-signal/15 px-1.5 py-0.5 text-ink">Placeholder</span> Public email
-                    address coming soon — use the form for now.
-                  </p>
+                  <p className="mt-2 text-[0.95rem] text-muted">A public email address is on its way — please use the form for now.</p>
                 ) : (
-                  <a href={`mailto:${site.email}`} className="link-underline mt-2 inline-block text-[1.15rem] font-medium">
+                  <a href={`mailto:${site.email}`} className="link-underline mt-2 inline-block text-[1.1rem] font-semibold">
                     {site.email}
                   </a>
                 )}
               </div>
+              <div>
+                <Eyebrow dot={false}>We work with</Eyebrow>
+                <p className="mt-2 text-[0.95rem] text-ink-2">{site.sectors.join(", ")}.</p>
+              </div>
               {site.socials.length > 0 && (
                 <div>
-                  <p className="label text-muted">Social</p>
+                  <Eyebrow dot={false}>Social</Eyebrow>
                   <ul className="mt-2 flex flex-wrap gap-4">
                     {site.socials.map((s) => (
                       <li key={s.href}>
-                        <a href={s.href} target="_blank" rel="noopener noreferrer" className="link-underline">
+                        <a href={s.href} target="_blank" rel="noopener noreferrer" className="link-underline font-semibold">
                           {s.label}
                         </a>
                       </li>

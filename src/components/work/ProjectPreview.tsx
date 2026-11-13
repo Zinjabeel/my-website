@@ -32,7 +32,7 @@ export function ProjectPreview({ project }: { project: Project }) {
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div role="group" aria-label="Preview mode" className="flex rounded-[10px] border hairline bg-paper-2 p-1">
+        <div role="group" aria-label="Preview mode" className="flex rounded-[7px] border-[1.5px] border-ink bg-paper-2 p-1">
           {(["screenshot", "live"] as const).map((v) => (
             <button
               key={v}
@@ -40,14 +40,14 @@ export function ProjectPreview({ project }: { project: Project }) {
               aria-pressed={view === v}
               disabled={v === "live" && !project.embeddable}
               onClick={() => setView(v)}
-              className="label h-9 rounded-[7px] px-3.5 transition-colors aria-pressed:bg-ink aria-pressed:text-paper disabled:cursor-not-allowed disabled:opacity-40"
+              className="eyebrow h-9 rounded-[4px] px-3.5 transition-colors aria-pressed:bg-ink aria-pressed:text-paper disabled:cursor-not-allowed disabled:opacity-40"
               title={v === "live" && !project.embeddable ? "This website doesn't allow being embedded" : undefined}
             >
               {v === "screenshot" ? "Screenshot" : "Live site"}
             </button>
           ))}
         </div>
-        <div role="group" aria-label="Device" className="flex rounded-[10px] border hairline bg-paper-2 p-1">
+        <div role="group" aria-label="Device" className="flex rounded-[7px] border-[1.5px] border-ink bg-paper-2 p-1">
           {(
             [
               ["desktop", Monitor],
@@ -60,7 +60,7 @@ export function ProjectPreview({ project }: { project: Project }) {
               aria-pressed={device === d}
               aria-label={d === "desktop" ? "Desktop view" : "Mobile view"}
               onClick={() => setDevice(d)}
-              className="grid h-9 w-11 place-items-center rounded-[7px] transition-colors aria-pressed:bg-ink aria-pressed:text-paper"
+              className="grid h-9 w-11 place-items-center rounded-[4px] transition-colors aria-pressed:bg-ink aria-pressed:text-paper"
             >
               <Icon className="size-4" aria-hidden />
             </button>
@@ -68,7 +68,7 @@ export function ProjectPreview({ project }: { project: Project }) {
         </div>
       </div>
 
-      <div className="rounded-[12px] bg-night p-3 sm:p-[3.5%]">
+      <div className="card card-hard !bg-night p-3 sm:p-[3%]">
         <div
           className={`mx-auto overflow-hidden rounded-[8px] bg-night-2 shadow-[0_40px_80px_-30px_rgb(0_0_0/0.7)] transition-[max-width] duration-700 ease-[var(--ease-out-expo)] ${
             device === "mobile" ? "max-w-[390px]" : "max-w-[1280px]"

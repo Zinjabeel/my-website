@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Check } from "lucide-react";
-import { TopBar } from "@/components/site/TopBar";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { CallToAction } from "@/components/site/CallToAction";
-import { ButtonLink, SectionLabel, Tag } from "@/components/ui/primitives";
-import { Reveal, SplitWords } from "@/components/ui/motion";
+import { ButtonLink, Eyebrow } from "@/components/ui/primitives";
+import { Reveal } from "@/components/ui/motion";
 import { services, stages } from "@/content/offer";
 import { breadcrumbJsonLd, JsonLd, absoluteUrl } from "@/lib/seo";
 import { site } from "@/content/site";
@@ -40,103 +39,99 @@ export default async function ServicePage({ params }: Props) {
 
   return (
     <>
-      <TopBar section="Service" />
-
-      <section className="gutter pb-16 pt-[4vh] md:pb-28">
-        <Link href="/#services" className="label inline-flex items-center gap-2 text-muted transition-colors hover:text-ink">
-          <ArrowLeft className="size-3.5" aria-hidden /> All services
-        </Link>
-        <div className="mt-10 flex items-center gap-3">
-          <span className="label rounded-full bg-ink px-3 py-1.5 text-paper">{code}</span>
-          <span className="label text-muted">Service</span>
-        </div>
-        <h1 className="display mt-6 max-w-[14ch] text-[clamp(3.2rem,9.5vw,10rem)]">
-          <SplitWords text={s.title} immediate delay={0.35} />
-        </h1>
-        <div className="mt-10 grid gap-8 md:grid-cols-12">
-          <p className="headline text-[clamp(1.4rem,2.4vw,2.2rem)] md:col-span-7">{s.summary}</p>
-          <div className="flex flex-wrap content-start gap-2 md:col-span-4 md:col-start-9">
-            {s.tags.map((t) => (
-              <Tag key={t}>{t}</Tag>
-            ))}
+      <header className="border-b hairline">
+        <div className="wrap pb-12 pt-10 md:pb-16 md:pt-14">
+          <Link href="/services" className="eyebrow inline-flex items-center gap-2 text-muted transition-colors hover:text-ink">
+            <ArrowLeft className="size-3.5" aria-hidden /> All services
+          </Link>
+          <div className="mt-8 flex flex-wrap items-center gap-2">
+            <span className="tag">Service</span>
+            <span className="tag tag-outline">{code}</span>
+          </div>
+          <h1 className="display h-page mt-5 max-w-[15ch]">{s.title}</h1>
+          <div className="mt-7 grid gap-8 md:grid-cols-12">
+            <p className="lead md:col-span-7">{s.summary}</p>
+            <ul className="flex flex-wrap content-start gap-2 md:col-span-4 md:col-start-9" aria-label="Focus areas">
+              {s.tags.map((t) => (
+                <li key={t} className="tag tag-outline">
+                  {t}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-      </section>
+      </header>
 
-      <section aria-labelledby="included-title" className="bg-night py-24 text-paper md:py-36">
-        <div className="gutter grid gap-12 md:grid-cols-12">
+      <section aria-labelledby="included-title" className="band-ink">
+        <div className="wrap section grid gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
-            <p className="label text-fog">(01) What&apos;s included</p>
-            <h2 id="included-title" className="display mt-6 text-[clamp(2.6rem,5.5vw,5.5rem)]">
-              What you get
+            <Eyebrow className="text-fog">What&apos;s included</Eyebrow>
+            <h2 id="included-title" className="display h-section mt-5">
+              What you get.
             </h2>
-            <p className="mt-6 max-w-md text-fog">{s.detail}</p>
+            <p className="lead mt-5 max-w-md">{s.detail}</p>
           </div>
           <ol className="md:col-span-6 md:col-start-7">
             {s.included.map((item, i) => (
-              <Reveal
-                as="li"
-                key={item}
-                delay={i * 0.06}
-                className="flex items-start gap-5 border-t border-night-3 py-6 last:border-b"
-              >
-                <span className="grid size-8 shrink-0 place-items-center rounded-full bg-signal text-signal-ink" aria-hidden>
-                  <Check className="size-4" />
+              <Reveal as="li" key={item} delay={i * 0.04} className="flex items-start gap-4 border-b border-night-3 py-5 text-[1.1rem] first:border-t">
+                <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-signal text-signal-ink" aria-hidden>
+                  <Check className="size-4" strokeWidth={3} />
                 </span>
-                <span className="pt-1 text-[1.15rem]">{item}</span>
+                {item}
               </Reveal>
             ))}
           </ol>
         </div>
       </section>
 
-      <section aria-labelledby="fit-title" className="gutter py-24 md:py-36">
-        <div className="grid gap-12 md:grid-cols-12">
-          <SectionLabel index="02" className="md:col-span-3">
-            Is it for you?
-          </SectionLabel>
-          <div className="md:col-span-9">
-            <h2 id="fit-title" className="headline text-[clamp(1.9rem,4vw,3.75rem)]">
+      <section aria-labelledby="fit-title" className="wrap section">
+        <div className="grid gap-8 md:grid-cols-12">
+          <div className="md:col-span-4">
+            <Eyebrow>Is it for you?</Eyebrow>
+          </div>
+          <div className="md:col-span-8">
+            <h2 id="fit-title" className="display text-[clamp(1.6rem,3vw,2.6rem)] !leading-[1.08]">
               {s.fit}
             </h2>
-            <p className="mt-8 max-w-xl text-[1.1rem] text-ink-2">
+            <p className="lead mt-6 max-w-xl">
               Every Launchly website comes with touch-ups, changes and updates for the first 12 months at no extra charge.
             </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <ButtonLink href="/start" variant="primary">
+                Start a project
+              </ButtonLink>
+              <ButtonLink href="/work" variant="outline">
+                See our work
+              </ButtonLink>
+            </div>
           </div>
         </div>
 
-        <div className="mt-24 grid gap-12 md:grid-cols-12">
-          <SectionLabel index="03" className="md:col-span-3">
-            How it runs
-          </SectionLabel>
-          <ol className="grid grid-cols-2 gap-px overflow-hidden rounded-[10px] bg-line sm:grid-cols-4 md:col-span-9 lg:grid-cols-7">
+        <div className="mt-20 grid gap-8 md:grid-cols-12">
+          <div className="md:col-span-4">
+            <Eyebrow>How it runs</Eyebrow>
+            <p className="mt-4 max-w-xs text-muted">The same seven steps on every project.</p>
+          </div>
+          <ol className="grid grid-cols-2 overflow-hidden rounded-[8px] border-[1.5px] border-ink sm:grid-cols-4 md:col-span-8 lg:grid-cols-7">
             {stages.map((st) => (
-              <li key={st.id} className="bg-paper-2 p-4">
-                <Link href={`/process#${st.id}`} className="group block">
-                  <span className="display text-[2rem] text-ink/20 transition-colors group-hover:text-signal">{st.number}</span>
-                  <span className="mt-6 block text-[0.9rem] font-semibold leading-tight">{st.title}</span>
+              <li key={st.id} className="border-b border-r hairline">
+                <Link href={`/process#${st.id}`} className="group flex h-full flex-col p-4 transition-colors hover:bg-ink hover:text-paper">
+                  <span className="label text-muted group-hover:text-signal">{st.number}</span>
+                  <span className="mt-8 text-[0.9rem] font-bold leading-tight">{st.title}</span>
                 </Link>
               </li>
             ))}
           </ol>
         </div>
-
-        <div className="mt-20 flex flex-wrap gap-3 md:pl-[25%]">
-          <ButtonLink href="/contact" variant="ink">
-            Discuss this service
-          </ButtonLink>
-          <ButtonLink href="/work" variant="ghost">
-            See our work
-          </ButtonLink>
-        </div>
       </section>
 
-      <section className="gutter pb-24">
-        <Link href={`/services/${next.id}`} className="group block border-t hairline pt-8" data-cursor="Next service">
-          <p className="label text-muted">Next service</p>
-          <p className="display mt-4 text-[clamp(2.6rem,8vw,8rem)] transition-colors duration-300 group-hover:text-signal">
-            {next.title}
-          </p>
+      <section className="wrap pb-20">
+        <Link href={`/services/${next.id}`} className="group flex items-end justify-between gap-6 border-t-[1.5px] border-ink pt-8">
+          <span>
+            <Eyebrow>Next service</Eyebrow>
+            <span className="display mt-4 block text-[clamp(1.9rem,4.6vw,3.75rem)] transition-colors group-hover:text-signal">{next.title}</span>
+          </span>
+          <ArrowRight className="mb-3 size-8 shrink-0 transition-transform duration-300 group-hover:translate-x-2" aria-hidden />
         </Link>
       </section>
 
@@ -154,6 +149,7 @@ export default async function ServicePage({ params }: Props) {
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
+          { name: "Services", path: "/services" },
           { name: s.title, path: `/services/${s.id}` },
         ])}
       />

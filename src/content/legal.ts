@@ -15,7 +15,7 @@ export type LegalDoc = {
   sections: LegalSection[];
 };
 
-const UPDATED = "2026-11-11";
+const UPDATED = "2026-11-13";
 
 export const legalDocs: LegalDoc[] = [
   {
@@ -37,7 +37,9 @@ export const legalDocs: LegalDoc[] = [
         id: "what",
         title: "What we collect",
         body: [
-          "Contact form: when you send an enquiry we receive your name, email address, and — if you choose to give them — your company, project type, budget range and the message you write.",
+          "Contact form: when you send a message we receive your name, email address, and — if you choose to give them — your company, project type, budget range and the message you write.",
+          "Account: if you create an account we store your name, email address and a securely hashed password (we never see the password itself).",
+          "Project briefs: when you send a brief from your account we store what you write in it — your company, current website, the type of project, your goals, and optionally a budget range and timeline.",
           "Technical data: like every website, our hosting provider automatically processes basic request data (IP address, browser type, requested page, time) to deliver pages and keep the service secure. We do not use this to identify you.",
           "We do not use analytics, advertising or tracking tools, and we do not build profiles of visitors.",
         ],
@@ -46,7 +48,7 @@ export const legalDocs: LegalDoc[] = [
         id: "why",
         title: "Why we use it (legal basis)",
         body: [
-          "We use contact form data only to reply to your enquiry and, if we work together, to prepare and manage the project. The legal basis is taking steps at your request before entering into a contract, and our legitimate interest in responding to business enquiries.",
+          "We use contact messages, account details and project briefs only to reply to you and, if we work together, to prepare and manage the project. The legal basis is taking steps at your request before entering into a contract, and our legitimate interest in responding to business enquiries.",
           "Technical request data is processed on the basis of our legitimate interest in operating a secure, working website.",
         ],
       },
@@ -54,7 +56,7 @@ export const legalDocs: LegalDoc[] = [
         id: "sharing",
         title: "Who we share it with",
         body: [
-          "We never sell personal data. We share it only with service providers who help us run the website and deliver your message: our hosting provider ([hosting provider, e.g. Vercel Inc.]) and our email delivery provider ([email provider, e.g. Resend]). They process data on our behalf under data processing agreements.",
+          "We never sell personal data. We share it only with service providers who help us run the website and deliver your message: our hosting provider ([hosting provider, e.g. Vercel Inc.]), our account and database provider (Supabase) and our email delivery provider ([email provider, e.g. Resend]). They process data on our behalf under data processing agreements.",
           "Some providers may process data outside your country. Where that happens, we rely on appropriate safeguards such as standard contractual clauses.",
         ],
       },
@@ -62,7 +64,8 @@ export const legalDocs: LegalDoc[] = [
         id: "retention",
         title: "How long we keep it",
         body: [
-          "Enquiries that do not lead to a project are deleted within [12] months. If we work together, project correspondence is kept for as long as needed for the project and any legal or accounting obligations.",
+          "Messages and briefs that do not lead to a project are deleted within [12] months. If we work together, project correspondence is kept for as long as needed for the project and any legal or accounting obligations.",
+          "You can delete your account at any time from your account page. That removes your account and every brief you have sent, immediately.",
         ],
       },
       {
@@ -77,7 +80,7 @@ export const legalDocs: LegalDoc[] = [
         id: "security",
         title: "Security",
         body: [
-          "The website is served over HTTPS with strict security headers. The contact form validates every submission, is protected against spam and abuse, and we limit access to enquiries to the people who need it.",
+          "The website is served over HTTPS with strict security headers. Forms validate every submission and are protected against spam and abuse. Each account can only read its own briefs — this is enforced in the database itself — and we limit access to messages and briefs to the people who need it.",
         ],
       },
       {
@@ -91,21 +94,23 @@ export const legalDocs: LegalDoc[] = [
     slug: "cookies",
     title: "Cookie Policy",
     short: "Cookies",
-    description: "Launchly's website does not use tracking or advertising cookies. Here is exactly what is stored.",
+    description: "Launchly's website uses no tracking or advertising cookies. Here is exactly what is stored.",
     updated: UPDATED,
     sections: [
       {
         id: "summary",
         title: "The short version",
         body: [
-          "This website does not set any cookies — no analytics cookies, no advertising cookies and no third-party tracking. That's why you don't see a cookie banner: there is nothing to consent to.",
+          "This website uses no analytics cookies, no advertising cookies and no third-party tracking. The only things stored in your browser are strictly necessary ones, listed below — which is why you see a short notice instead of a consent banner: there is nothing optional to accept or reject.",
         ],
       },
       {
         id: "storage",
         title: "What is stored in your browser",
         body: [
-          "Nothing that identifies you. Fonts are hosted on our own domain, so no requests are made to external font services. Your browser may cache files (images, scripts, styles) so pages load faster; you can clear this cache at any time.",
+          "Login: if you log in, your browser's local storage keeps a session token so you stay signed in. It is removed when you log out or delete your account.",
+          "Notice: once you dismiss the storage notice, a single local-storage entry remembers that so it doesn't appear again.",
+          "Nothing else. Fonts are hosted on our own domain, so no requests are made to external font services. Your browser may cache files (images, scripts, styles) so pages load faster; you can clear this cache at any time.",
         ],
       },
       {
@@ -144,6 +149,14 @@ export const legalDocs: LegalDoc[] = [
         body: [
           "All content on this website — text, design, graphics and code — belongs to Launchly unless stated otherwise. You may view and share pages for personal or internal business use, but you may not copy, republish or sell the content without our written permission.",
           "Project screenshots and previews show work created for our clients; the clients' names, brands and websites remain their property.",
+        ],
+      },
+      {
+        id: "accounts",
+        title: "Accounts",
+        body: [
+          "You can create a free account to send project briefs and follow their status. Please give accurate details, keep your password to yourself and tell us if you think someone else has used your account.",
+          "You can delete your account at any time. We may suspend accounts that are used to send spam or misuse the service.",
         ],
       },
       {

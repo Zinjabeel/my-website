@@ -3,10 +3,11 @@ import { Archivo, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { site } from "@/content/site";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
-import { Dock } from "@/components/site/Dock";
+import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
-import { Cursor } from "@/components/site/Cursor";
-import { JsonLd, organizationJsonLd } from "@/lib/seo";
+import { CookieNotice } from "@/components/site/CookieNotice";
+import { AuthProvider } from "@/components/auth/AuthProvider";
+import { JsonLd, organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -21,34 +22,25 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
+const title = `${site.name} — Website development studio`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: {
-    default: `${site.name} — Website development studio`,
-    template: `%s — ${site.name}`,
-  },
+  title: { default: title, template: `%s — ${site.name}` },
   description: site.description,
   applicationName: site.name,
   authors: [{ name: site.name }],
+  creator: site.name,
+  publisher: site.name,
   alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    siteName: site.name,
-    locale: "en",
-    url: "/",
-    title: `${site.name} — Website development studio`,
-    description: site.description,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${site.name} — Website development studio`,
-    description: site.description,
-  },
-  robots: { index: true, follow: true },
+  formatDetection: { telephone: false, address: false, email: false },
+  openGraph: { type: "website", siteName: site.name, locale: "en", url: "/", title, description: site.description },
+  twitter: { card: "summary_large_image", title, description: site.description },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#e9e9e6",
+  themeColor: "#f1f0ec",
   width: "device-width",
   initialScale: 1,
 };
@@ -59,17 +51,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <a
           href="#main"
-          className="label sr-only z-[100] rounded bg-ink px-4 py-3 text-paper focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+          className="eyebrow sr-only z-[100] rounded bg-ink px-4 py-3 text-paper focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
         >
           Skip to content
         </a>
-        {children}
-        <Footer />
+        <AuthProvider>
+          <Header />
+          {children}
+          <Footer />
+          <CookieNotice />
+        </AuthProvider>
         <SmoothScroll />
-        <Dock />
-        <Cursor />
-        <div aria-hidden className="grain" />
         <JsonLd data={organizationJsonLd()} />
+        <JsonLd data={websiteJsonLd()} />
       </body>
     </html>
   );

@@ -1,80 +1,113 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 
-/** "(02) Services" style section label. */
-export function SectionLabel({ index, children, className = "" }: { index?: string; children: React.ReactNode; className?: string }) {
-  return (
-    <p className={`label flex items-center gap-3 text-muted ${className}`}>
-      {index && <span>({index})</span>}
-      <span>{children}</span>
-    </p>
-  );
-}
+type Variant = "primary" | "signal" | "outline";
 
-type ButtonProps = {
+type ButtonLinkProps = {
   href: string;
   children: React.ReactNode;
-  variant?: "signal" | "ink" | "ghost" | "paper";
+  variant?: Variant;
+  size?: "md" | "sm";
   external?: boolean;
   className?: string;
-  cursor?: string;
+  icon?: boolean;
 };
 
-const variants = {
-  signal: "bg-signal text-signal-ink hover:brightness-110",
-  ink: "bg-ink text-paper hover:bg-ink-2",
-  paper: "bg-paper text-ink hover:bg-paper-2",
-  ghost: "border border-current/25 hover:border-current",
-};
-
-/** Primary call-to-action link with a rolling arrow. */
-export function ButtonLink({ href, children, variant = "ink", external, className = "", cursor }: ButtonProps) {
-  const cls = `group inline-flex h-12 items-center gap-3 rounded-[10px] pl-5 pr-2 text-[0.9375rem] font-semibold tracking-[-0.01em] transition-[background-color,filter,border-color,transform] duration-200 active:scale-[0.98] ${variants[variant]} ${className}`;
-  const inner = (
-    <>
-      <span>{children}</span>
-      <span className="relative grid size-8 place-items-center overflow-hidden rounded-[7px] bg-current/10" aria-hidden>
-        <ArrowUpRight className="size-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-8 group-hover:translate-x-8" />
-        <ArrowUpRight className="absolute size-4 -translate-x-8 translate-y-8 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-0 group-hover:translate-y-0" />
-      </span>
-    </>
-  );
+/** The one call-to-action style on the site. Renders a real link (internal or external). */
+export function ButtonLink({ href, children, variant = "primary", size = "md", external, className = "", icon = true }: ButtonLinkProps) {
+  const cls = `btn btn-${variant} ${size === "sm" ? "btn-sm" : ""} ${className}`;
   if (external) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={cls} data-cursor={cursor}>
-        {inner}
+      <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
+        {children}
+        {icon && <ArrowUpRight className="size-4" aria-hidden />}
         <span className="sr-only">(opens in a new tab)</span>
       </a>
     );
   }
   return (
-    <Link href={href} className={cls} data-cursor={cursor}>
-      {inner}
+    <Link href={href} className={cls}>
+      {children}
+      {icon && <ArrowRight className="size-4" aria-hidden />}
     </Link>
   );
 }
 
-/** Small mono tag. */
-export function Tag({ children, tone = "light" }: { children: React.ReactNode; tone?: "light" | "dark" }) {
+/** Small uppercase line above a heading. `dot` adds the signal mark. */
+export function Eyebrow({ children, className = "", dot = true }: { children: React.ReactNode; className?: string; dot?: boolean }) {
   return (
-    <span
-      className={`label inline-flex items-center rounded-full border px-2.5 py-1 text-[0.6875rem] ${
-        tone === "light" ? "border-line text-ink-2" : "border-night-3 text-fog"
-      }`}
-    >
+    <p className={`eyebrow flex items-center gap-2.5 ${className}`}>
+      {dot && <span aria-hidden className="size-2 shrink-0 rounded-full bg-signal" />}
       {children}
-    </span>
+    </p>
   );
+}
+
+/**
+ * The one section header on the site: eyebrow, title, optional intro and action,
+ * always in the same positions so every section starts the same way.
+ */
+export function SectionHead({
+  eyebrow,
+  title,
+  intro,
+  action,
+  id,
+  as: Tag = "h2",
+}: {
+  eyebrow: string;
+  title: string;
+  intro?: string;
+  action?: React.ReactNode;
+  id?: string;
+  as?: "h1" | "h2";
+}) {
+  return (
+    <div className="mb-10 grid gap-6 md:mb-14 md:grid-cols-12 md:items-end">
+      <div className="md:col-span-8">
+        <Eyebrow>{eyebrow}</Eyebrow>
+        <Tag id={id} className="display h-section mt-5">
+          {title}
+        </Tag>
+        {intro && <p className="lead mt-5 max-w-2xl">{intro}</p>}
+      </div>
+      {action && <div className="md:col-span-4 md:justify-self-end">{action}</div>}
+    </div>
+  );
+}
+
+/** Top-of-page header used by every inner page, so they all open the same way. */
+export function PageHead({
+  eyebrow,
+  title,
+  intro,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  intro?: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <header className="border-b hairline">
+      <div className="wrap pb-12 pt-12 md:pb-16 md:pt-20">
+        <Eyebrow>{eyebrow}</Eyebrow>
+        <h1 className="display h-page mt-6 max-w-[18ch]">{title}</h1>
+        {intro && <p className="lead mt-6 max-w-2xl">{intro}</p>}
+        {children}
+      </div>
+    </header>
+  );
+}
+
+export function Tag({ children, tone = "outline" }: { children: React.ReactNode; tone?: "signal" | "ink" | "outline" }) {
+  return <span className={`tag ${tone === "ink" ? "tag-ink" : tone === "outline" ? "tag-outline" : ""}`}>{children}</span>;
 }
 
 /** Visible marker for example / placeholder content. */
 export function PlaceholderBadge({ className = "" }: { className?: string }) {
   return (
-    <span
-      className={`label inline-flex items-center gap-1.5 rounded-full bg-signal px-2.5 py-1 text-[0.6875rem] font-semibold text-signal-ink ${className}`}
-      title="Example entry used for testing — not real Launchly work"
-    >
-      <span className="size-1.5 rounded-full bg-signal-ink" aria-hidden />
+    <span className={`tag ${className}`} title="Example entry used for testing — not real Launchly work">
       Example entry
     </span>
   );

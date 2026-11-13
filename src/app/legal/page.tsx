@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { TopBar } from "@/components/site/TopBar";
-import { SplitWords } from "@/components/ui/motion";
+import { ArrowRight } from "lucide-react";
+import { PageHead } from "@/components/ui/primitives";
 import { legalDocs } from "@/content/legal";
 
 export const metadata: Metadata = {
@@ -14,26 +13,21 @@ export const metadata: Metadata = {
 export default function LegalIndex() {
   return (
     <>
-      <TopBar section="Legal" />
-      <section className="gutter pb-28 pt-[6vh]">
-        <p className="label text-muted">(Legal)</p>
-        <h1 className="display mt-6 text-[clamp(3.4rem,11vw,11rem)]">
-          <SplitWords text="The fine print." immediate delay={0.4} />
-        </h1>
-        <p className="mt-8 max-w-xl text-[1.15rem] text-ink-2">
-          Plain-language policies that describe exactly how this website works. No tracking, no cookie banner, no surprises.
-        </p>
-        <ul className="mt-16 border-t hairline">
+      <PageHead
+        eyebrow="Legal"
+        title="The fine print."
+        intro="Plain-language policies that describe exactly how this website works. No tracking, no advertising cookies, no surprises."
+      />
+      <section className="wrap section">
+        <ul className="grid gap-5 sm:grid-cols-2">
           {legalDocs.map((d, i) => (
-            <li key={d.slug} className="border-b hairline">
-              <Link href={`/legal/${d.slug}`} className="group grid items-center gap-4 py-8 md:grid-cols-[5rem_1fr_1.2fr_auto]">
-                <span className="label text-muted">0{i + 1}</span>
-                <span className="headline text-[clamp(1.8rem,3.6vw,3.25rem)] transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-2">
-                  {d.title}
-                </span>
-                <span className="text-muted">{d.description}</span>
-                <span className="grid size-11 place-items-center rounded-full border hairline transition-colors group-hover:border-ink group-hover:bg-ink group-hover:text-paper" aria-hidden>
-                  <ArrowUpRight className="size-4" />
+            <li key={d.slug} className="flex">
+              <Link href={`/legal/${d.slug}`} className="card card-link group flex w-full flex-col p-6 md:p-7">
+                <span className="label text-muted">L-{String(i + 1).padStart(2, "0")}</span>
+                <h2 className="h-card mt-7">{d.title}</h2>
+                <p className="mt-2.5 flex-1 text-[0.975rem] text-ink-2">{d.description}</p>
+                <span className="eyebrow mt-6 inline-flex items-center gap-2 border-t hairline pt-4">
+                  Read <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" aria-hidden />
                 </span>
               </Link>
             </li>

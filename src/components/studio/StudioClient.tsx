@@ -57,9 +57,9 @@ export function StudioClient() {
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   return (
-    <div className="gutter mx-auto max-w-5xl py-16">
+    <div className="wrap max-w-5xl py-16">
       <p className="label text-muted">(Studio — local development only)</p>
-      <h1 className="display mt-4 text-[clamp(2.8rem,7vw,6rem)]">Add a project</h1>
+      <h1 className="display h-page mt-4">Add a project</h1>
       <p className="mt-4 max-w-xl text-muted">
         Paste a website URL. We check whether it can be embedded, read its title and description, capture desktop and mobile
         screenshots, and add it to <code className="label">src/content/projects.json</code>. Commit that file to publish.
@@ -145,7 +145,7 @@ export function StudioClient() {
 
       {done && (
         <div role="status" className="mt-10 rounded-[10px] bg-night p-8 text-paper">
-          <p className="headline text-[2rem]">Project added.</p>
+          <p className="display text-[2rem]">Project added.</p>
           <p className="mt-2 text-fog">
             {done.captured ? "Screenshots captured." : "Screenshots could not be captured — run `npm run screenshots` later."} The page may take a
             moment to appear while the dev server reloads.

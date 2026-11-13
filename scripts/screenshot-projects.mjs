@@ -17,12 +17,25 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dataFile = path.join(root, "src", "content", "projects.json");
 const FULL_MAX_HEIGHT = 5400;
 
+/** Declines cookie banners (the privacy-preserving choice) so they don't cover the screenshot. */
+async function declineCookies(page) {
+  for (const name of [/^reject all$/i, /^reject$/i, /^decline$/i, /only (necessary|essential)/i, /^got it$/i]) {
+    const btn = page.getByRole("button", { name }).first();
+    if (await btn.isVisible().catch(() => false)) {
+      await btn.click({ timeout: 2000 }).catch(() => {});
+      await page.waitForTimeout(600);
+      return;
+    }
+  }
+}
+
 async function settle(page) {
   try {
     await page.waitForLoadState("networkidle", { timeout: 15000 });
   } catch {
     /* some sites never go idle — continue */
   }
+  await declineCookies(page);
   // Nudge lazy content and scroll-triggered reveals, then return to top.
   await page.evaluate(async () => {
     const step = window.innerHeight * 0.8;

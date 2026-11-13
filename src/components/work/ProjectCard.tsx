@@ -1,99 +1,110 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Lock } from "lucide-react";
 import { hostOf, type Project } from "@/content/projects";
 import { PlaceholderBadge } from "@/components/ui/primitives";
 
-/** Large framed project card: the site sits inside a dark stage, caption underneath. */
-export function ProjectCard({ project, priority = false, index }: { project: Project; priority?: boolean; index?: number }) {
+/** Browser-framed screenshot. On hover the full page scrolls inside the frame. */
+export function ProjectShot({ project, priority = false, sizes }: { project: Project; priority?: boolean; sizes: string }) {
+  const m = project.media;
   return (
-    <article className="group">
-      <Link href={`/work/${project.slug}`} data-cursor="Explore" className="block" aria-label={`${project.name} — view case study`}>
-        <div
-          className="relative overflow-hidden rounded-[10px] bg-night p-[6%] transition-colors duration-500"
-          style={{ ["--accent" as string]: project.accent ?? "#ff5b1f" }}
-        >
-          <div
-            aria-hidden
-            className="absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-            style={{ background: "radial-gradient(70% 60% at 50% 100%, color-mix(in srgb, var(--accent) 45%, transparent), transparent)" }}
-          />
-          <div className="relative aspect-[16/10] overflow-hidden rounded-[6px] bg-night-2 shadow-[0_30px_60px_-20px_rgb(0_0_0/0.6)] transition-transform duration-700 ease-[var(--ease-out-expo)] [container-type:size] group-hover:scale-[1.025]">
-            {project.media?.full && project.media.fullHeight ? (
-              <Image
-                src={project.media.full}
-                alt={`Screenshot of the ${project.name} website`}
-                width={1440}
-                height={project.media.fullHeight}
-                priority={priority}
-                sizes="(max-width: 768px) 92vw, 50vw"
-                className="scroll-shot absolute left-0 top-0 h-auto w-full"
-              />
-            ) : project.media ? (
-              <Image
-                src={project.media.desktop}
-                alt={`Screenshot of the ${project.name} website`}
-                fill
-                priority={priority}
-                sizes="(max-width: 768px) 92vw, 60vw"
-                className="object-cover object-top"
-              />
-            ) : (
-              <div className="grid h-full place-items-center">
-                <span className="headline text-[clamp(2rem,6vw,5rem)] text-paper">{project.name}</span>
-              </div>
-            )}
-          </div>
-          <div className="absolute left-4 top-4 flex gap-2 sm:left-5 sm:top-5">
-            {project.placeholder && <PlaceholderBadge />}
-          </div>
-          {typeof index === "number" && (
-            <span className="label absolute right-4 top-4 text-fog sm:right-5 sm:top-5">({String(index + 1).padStart(2, "0")})</span>
-          )}
-        </div>
-      </Link>
-      <div className="mt-4 flex items-start justify-between gap-4">
-        <div>
-          <h3 className="text-[1.15rem] font-semibold tracking-[-0.02em]">
-            <Link href={`/work/${project.slug}`} className="link-underline">
-              {project.name}
-            </Link>
-            <span className="ml-2 text-[0.8rem] font-normal text-muted">from</span>
-            <span className="ml-2 text-[1.05rem] font-medium">{project.sector}</span>
-          </h3>
-          <p className="mt-1 max-w-lg text-[0.95rem] text-muted">{project.summary}</p>
-        </div>
-        <span className="label flex shrink-0 items-center gap-1 pt-1 text-muted transition-colors group-hover:text-ink">
-          {hostOf(project.url)}
-          <ArrowUpRight className="size-3.5" aria-hidden />
+    <div className="card card-hard overflow-hidden bg-night">
+      <div className="flex items-center gap-3 border-b border-night-3 bg-night-2 px-3.5 py-2.5">
+        <span className="flex gap-1.5" aria-hidden>
+          <span className="size-2.5 rounded-full bg-night-3" />
+          <span className="size-2.5 rounded-full bg-night-3" />
+          <span className="size-2.5 rounded-full bg-night-3" />
         </span>
+        <span className="label flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded bg-night px-3 py-1 text-fog">
+          <Lock className="size-3 shrink-0" aria-hidden />
+          <span className="truncate normal-case">{hostOf(project.url)}</span>
+        </span>
+        <span className="w-10" aria-hidden />
+      </div>
+      <div className="relative aspect-[16/10] overflow-hidden bg-night-2 [container-type:size]">
+        {m?.full && m.fullHeight ? (
+          <Image
+            src={m.full}
+            alt={`Screenshot of the ${project.name} website`}
+            width={1440}
+            height={m.fullHeight}
+            priority={priority}
+            sizes={sizes}
+            className="scroll-shot absolute left-0 top-0 h-auto w-full"
+          />
+        ) : m ? (
+          <Image src={m.desktop} alt={`Screenshot of the ${project.name} website`} fill priority={priority} sizes={sizes} className="object-cover object-top" />
+        ) : (
+          <div className="grid h-full place-items-center p-6 text-center">
+            <span className="display text-[clamp(1.6rem,4vw,3rem)] text-paper">{project.name}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** Project presented as a feature row: large framed preview beside the essentials. */
+export function ProjectFeature({ project, priority = false, index = 0 }: { project: Project; priority?: boolean; index?: number }) {
+  return (
+    <article className="group grid gap-8 md:grid-cols-12 md:items-center md:gap-12">
+      <Link
+        href={`/work/${project.slug}`}
+        aria-label={`${project.name} — view case study`}
+        className={`block md:col-span-7 ${index % 2 ? "md:order-2" : ""}`}
+      >
+        <ProjectShot project={project} priority={priority} sizes="(max-width: 768px) 92vw, 56vw" />
+      </Link>
+      <div className="md:col-span-5">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="tag">{project.sector}</span>
+          <span className="tag tag-outline">{project.year}</span>
+          {project.placeholder && <PlaceholderBadge />}
+        </div>
+        <h3 className="display mt-5 text-[clamp(1.9rem,3.4vw,3rem)]">
+          <Link href={`/work/${project.slug}`} className="transition-colors hover:text-signal">
+            {project.name}
+          </Link>
+        </h3>
+        <p className="lead mt-4">{project.summary}</p>
+        <ul className="mt-6 flex flex-wrap gap-2" aria-label="Services">
+          {project.services.map((s) => (
+            <li key={s} className="tag tag-outline">
+              {s}
+            </li>
+          ))}
+        </ul>
+        <div className="mt-8 flex flex-wrap items-center gap-5">
+          <Link href={`/work/${project.slug}`} className="btn btn-primary">
+            Read the case study <ArrowRight className="size-4" aria-hidden />
+          </Link>
+          <a href={project.url} target="_blank" rel="noopener noreferrer" className="link-underline inline-flex items-center gap-1 text-[0.9rem] font-semibold">
+            {hostOf(project.url)} <ArrowUpRight className="size-3.5" aria-hidden />
+            <span className="sr-only">(opens in a new tab)</span>
+          </a>
+        </div>
       </div>
     </article>
   );
 }
 
-/** The empty slot that invites the next client. Doubles as the portfolio's empty state. */
+/** The open slot that invites the next client. Also the portfolio's empty state. */
 export function ReservedCard() {
   return (
-    <article className="group">
-      <Link href="/contact" data-cursor="Start a project" className="block">
-        <div className="relative grid aspect-[16/10] place-items-center overflow-hidden rounded-[10px] border border-dashed border-ink/25 bg-paper-2 p-[6%] text-center transition-colors duration-500 group-hover:border-ink group-hover:bg-paper-3">
-          <div>
-            <p className="label text-muted">(Reserved slot)</p>
-            <p className="headline mt-4 text-[clamp(2rem,4.5vw,4rem)]">Your launch</p>
-            <p className="mx-auto mt-3 max-w-xs text-[0.95rem] text-muted">This space is kept for the next company we launch.</p>
-            <span className="label mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-paper">
-              Start a project <ArrowUpRight className="size-3.5" aria-hidden />
-            </span>
-          </div>
-        </div>
-      </Link>
-      <div className="mt-4">
-        <h3 className="text-[1.15rem] font-semibold tracking-[-0.02em]">
-          Next project <span className="ml-2 text-[0.8rem] font-normal text-muted">from</span>
-          <span className="ml-2 text-[1.05rem] font-medium">You</span>
-        </h3>
+    <Link
+      href="/start"
+      className="card card-link group grid gap-6 border-dashed bg-transparent p-7 md:grid-cols-12 md:items-center md:p-10"
+    >
+      <div className="md:col-span-8">
+        <span className="tag tag-ink">Reserved slot</span>
+        <p className="display mt-5 text-[clamp(1.9rem,3.4vw,3rem)]">Your launch goes here.</p>
+        <p className="lead mt-3 max-w-xl">This space is kept for the next company we launch. Send a brief and we&apos;ll show you how we&apos;d approach it.</p>
       </div>
-    </article>
+      <div className="md:col-span-4 md:justify-self-end">
+        <span className="btn btn-outline group-hover:bg-ink group-hover:text-paper">
+          Start a project <ArrowRight className="size-4" aria-hidden />
+        </span>
+      </div>
+    </Link>
   );
 }

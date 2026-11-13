@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { TopBar } from "@/components/site/TopBar";
 import { CallToAction } from "@/components/site/CallToAction";
-import { SectionLabel } from "@/components/ui/primitives";
-import { Reveal, ScrollWords, SplitWords } from "@/components/ui/motion";
+import { ButtonLink, Eyebrow, PageHead } from "@/components/ui/primitives";
+import { Reveal } from "@/components/ui/motion";
 import { principles } from "@/content/offer";
 import { site } from "@/content/site";
 import { breadcrumbJsonLd, JsonLd } from "@/lib/seo";
@@ -31,99 +30,103 @@ const approach = [
 ];
 
 export default function AboutPage() {
+  const facts = [
+    { k: "Building websites", v: `${site.yearsBuilding} years` },
+    { k: "Team", v: "Small and focused" },
+    { k: "Clients", v: "Established companies" },
+    { k: "Included care", v: "12 months" },
+  ];
   return (
     <>
-      <TopBar section="About" />
+      <PageHead
+        eyebrow="About Launchly"
+        title="A small team with a long view."
+        intro={`We've spent the last ${site.yearsBuilding} years designing and developing websites. Today Launchly works mostly with established companies in tech, news and media, construction and retail — businesses that need their website to do real work.`}
+      />
 
-      <section className="gutter pb-20 pt-[6vh] md:pb-32">
-        <SectionLabel index="01">About Launchly</SectionLabel>
-        <h1 className="display mt-6 text-[clamp(3.2rem,9.5vw,10rem)]">
-          <SplitWords text="A small team" immediate delay={0.4} className="block" />
-          <SplitWords text="with a long view." immediate delay={0.55} className="block text-ink/35" />
-        </h1>
-      </section>
-
-      <section aria-labelledby="who-title" className="gutter pb-28 md:pb-40">
-        <div className="grid gap-10 md:grid-cols-12">
-          <div className="md:col-span-3">
-            <SectionLabel index="02">Who we are</SectionLabel>
-            <h2 id="who-title" className="sr-only">
-              Who we are
-            </h2>
-          </div>
-          <ScrollWords
-            className="headline text-[clamp(1.8rem,3.8vw,3.75rem)] md:col-span-9"
-            text={`We've spent the last ${site.yearsBuilding} years designing and developing websites. Today Launchly is a small, focused team working mostly with established companies in tech, news and media, construction and retail — businesses that need their website to do real work.`}
-          />
-        </div>
-        <dl className="mt-20 grid grid-cols-2 border-t hairline md:grid-cols-4">
-          {[
-            { k: "Building websites", v: `${site.yearsBuilding} years` },
-            { k: "Team", v: "Small & focused" },
-            { k: "Clients", v: "Established companies" },
-            { k: "Included care", v: "12 months" },
-          ].map((s) => (
-            <div key={s.k} className="border-b hairline py-6 pr-4 md:border-b-0">
-              <dt className="label text-muted">{s.k}</dt>
-              <dd className="headline mt-3 text-[clamp(1.4rem,2.4vw,2.2rem)]">{s.v}</dd>
+      <section aria-label="Launchly in short" className="border-b-[1.5px] border-ink">
+        <dl className="wrap grid grid-cols-2 md:grid-cols-4">
+          {facts.map((f, i) => (
+            <div
+              key={f.k}
+              className={`hairline py-7 ${["pr-4", "border-l pl-4 md:px-6", "border-t pr-4 md:border-l md:border-t-0 md:px-6", "border-l border-t pl-4 md:border-t-0 md:px-6"][i]}`}
+            >
+              <dt className="label text-muted">{f.k}</dt>
+              <dd className="h-card mt-2">{f.v}</dd>
             </div>
           ))}
         </dl>
       </section>
 
-      <section aria-labelledby="believe-title" className="bg-night py-28 text-paper md:py-40">
-        <div className="gutter">
-          <p className="label flex gap-3 text-fog">
-            <span>(03)</span>
-            <span>What we believe</span>
-          </p>
-          <h2 id="believe-title" className="display mt-6 max-w-5xl text-[clamp(2.6rem,6.5vw,6.5rem)]">
-            A website should earn its keep.
-          </h2>
-          <p className="mt-8 max-w-2xl text-[1.15rem] text-fog">
-            Too many company websites look good on launch day and quietly stop working soon after: hard to update,
-            invisible in search, and not built to turn visitors into customers. Launchly exists to build the opposite.
-          </p>
-          <ul className="mt-16 grid gap-px overflow-hidden rounded-[10px] bg-night-3 sm:grid-cols-2">
-            {principles.map((p, i) => (
-              <Reveal as="li" key={p.id} delay={i * 0.06} className="bg-night p-8 md:p-10">
-                <p className="label text-signal">0{i + 1}</p>
-                <h3 className="mt-8 text-[clamp(1.5rem,2.4vw,2rem)] font-semibold tracking-[-0.03em]">{p.title}</h3>
-                <p className="mt-3 max-w-md text-fog">{p.body}</p>
-              </Reveal>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section aria-labelledby="approach-title" className="gutter py-28 md:py-40">
+      <section aria-labelledby="believe-title" className="wrap section">
         <div className="grid gap-10 md:grid-cols-12">
-          <div className="md:col-span-4">
-            <SectionLabel index="04">Our approach</SectionLabel>
-            <h2 id="approach-title" className="display mt-6 text-[clamp(2.6rem,5.5vw,5.25rem)]">
-              How we work
+          <div className="md:col-span-5">
+            <Eyebrow>What we believe</Eyebrow>
+            <h2 id="believe-title" className="display h-section mt-5">
+              A website should earn its keep.
             </h2>
           </div>
-          <ol className="md:col-span-8">
+          <div className="md:col-span-6 md:col-start-7">
+            <p className="lead">
+              Too many company websites look good on launch day and quietly stop working soon after: hard to update, invisible in
+              search, and not built to turn visitors into customers.
+            </p>
+            <p className="lead mt-5">Launchly exists to build the opposite — websites that keep bringing in work, year after year.</p>
+          </div>
+        </div>
+        <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {principles.map((p, i) => (
+            <Reveal as="li" key={p.id} delay={(i % 4) * 0.04} className="card p-6">
+              <p className="label text-signal">0{i + 1}</p>
+              <h3 className="h-card mt-7 !text-[1.2rem]">{p.title}</h3>
+              <p className="mt-2.5 text-[0.975rem] text-ink-2">{p.body}</p>
+            </Reveal>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="approach-title" className="band-ink">
+        <div className="wrap section grid gap-10 md:grid-cols-12">
+          <div className="md:col-span-5">
+            <Eyebrow className="text-fog">Our approach</Eyebrow>
+            <h2 id="approach-title" className="display h-section mt-5">
+              How we work.
+            </h2>
+            <div className="mt-8">
+              <ButtonLink href="/process" variant="outline">
+                The full process
+              </ButtonLink>
+            </div>
+          </div>
+          <ol className="md:col-span-6 md:col-start-7">
             {approach.map((a, i) => (
-              <Reveal as="li" key={a.title} delay={i * 0.06} className="grid gap-4 border-t hairline py-8 md:grid-cols-[4rem_1fr_1.4fr]">
-                <span className="label pt-1.5 text-muted">0{i + 1}</span>
-                <h3 className="text-[1.5rem] font-semibold tracking-[-0.03em]">{a.title}</h3>
-                <p className="text-muted">{a.body}</p>
+              <Reveal as="li" key={a.title} delay={i * 0.05} className="grid grid-cols-[3rem_1fr] border-b border-night-3 py-7 first:border-t">
+                <span className="label pt-1.5 text-signal">0{i + 1}</span>
+                <div>
+                  <h3 className="h-card">{a.title}</h3>
+                  <p className="mt-2 text-fog">{a.body}</p>
+                </div>
               </Reveal>
             ))}
           </ol>
         </div>
       </section>
 
-      <section aria-label="Founder" className="gutter pb-28 md:pb-40">
-        <div className="grid gap-6 border-t hairline pt-10 md:grid-cols-12">
-          <p className="label text-muted md:col-span-3">(05) The people</p>
-          <p className="max-w-2xl text-[clamp(1.1rem,1.6vw,1.4rem)] leading-snug md:col-span-9">
-            Launchly is run by a small team. We keep it deliberately compact, so every client works directly with the
-            people building their website.
-          </p>
-          <p className="label text-muted md:col-span-9 md:col-start-4">— Founded by {site.founder}</p>
+      <section aria-labelledby="people-title" className="wrap section">
+        <div className="grid gap-8 md:grid-cols-12">
+          <div className="md:col-span-5">
+            <Eyebrow>The people</Eyebrow>
+            <h2 id="people-title" className="display h-section mt-5">
+              Deliberately compact.
+            </h2>
+          </div>
+          <div className="md:col-span-6 md:col-start-7">
+            <p className="lead">
+              Launchly is run by a small team. We keep it that way on purpose, so every client works directly with the people
+              building their website.
+            </p>
+            <p className="label mt-8 border-t hairline pt-5 text-muted">Founded by {site.founder}</p>
+          </div>
         </div>
       </section>
 
